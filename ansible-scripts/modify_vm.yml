@@ -1,0 +1,44 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+     engine_url: https://dhcp31-210.perf.lab.eng.bos.redhat.com/ovirt-engine/api
+     engine_user: admin@internal
+     engine_password: 100yard-
+     engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+  vars_files:
+    - vm_vars.yml
+
+  tasks:
+    - block:
+        - name: Login to oVirt
+          ovirt_auth:
+            url: "{{ engine_url }}"
+            username: "{{ engine_user }}"
+            password: "{{ engine_password }}"
+            ca_file: "{{ engine_cafile }}"
+          tags:
+            - always
+
+        - name: Modify VM characteristics
+          ovirt_vms:
+            auth: "{{ ovirt_auth }}"
+            name: rhel73_01
+            state: "{{ state }}"
+            cpu_sockets: "{{ sockets }}"
+            cpu_cores: "{{ cores_per_socket }}"
+#            force: "{{ force }}"
+#            host: "{{ host }}"
+          poll: 0 
+
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+

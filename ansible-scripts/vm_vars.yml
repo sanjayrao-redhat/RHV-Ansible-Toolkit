@@ -1,0 +1,5 @@
+state: running
+sockets: 4
+cores_per_socket: 1
+#force: true
+#host: perf90
