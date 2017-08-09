@@ -24,36 +24,17 @@
           tags:
             - always
 
-        - name: Create new VM f
-          ovirt_vms:
-            auth: "{{ ovirt_auth }}"            
-            state: present
-            cluster: perf
-            name: newvm
-            memory: 2GiB
-            cpu_cores: 2
-            cpu_sockets: 2
-            cpu_shares: 1024
-            type: server
-            operating_system: rhel_7x64
-            disks:
-              - name: rhel7_disk
-                bootable: True
-            nics:
-              - name: nic1
-
     - name : Disk creation
       ovirt_disks:
+            auth: "{{ ovirt_auth }}"
+            state: attached
+            vm_name: rhel73_01
             name: rhel7_disk
             format: raw
-            bootable: true
             interface: virtio
             size: 20GiB
-            state: attached
-            storage_domain: bootimages
+            storage_domain: datadom
            
-
-
     - name: Logout from oVirt
       ovirt_auth:
         state: absent
