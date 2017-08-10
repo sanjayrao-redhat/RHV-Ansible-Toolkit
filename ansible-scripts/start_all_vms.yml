@@ -18,15 +18,24 @@
           tags:
             - always
 
-        - name: Start VMs listed below
+        - name: Get VM Basic Info
+          ovirt_vms_facts:
+            auth: "{{ ovirt_auth }}"
+            pattern: name=rhel73_0*
+            fetch_nested: true
+            nested_attributes: name
+
+        - name: Start/stop all VMs
           ovirt_vms:
             auth: "{{ ovirt_auth }}"
-            name: "{{item}}"
+            name: "{{ item.0 }}"
             state: running
-          with_items:
-            - R73_01
-            - R73_02
-            - R73_03
+          with_together:
+            - "{{ovirt_vms | map(attribute='name') | list}}"
+          loop_control:
+            label: "{{ item.0 }}"
+          async: 40
+          poll: 0
 
     - name: Logout from oVirt
       ovirt_auth:
