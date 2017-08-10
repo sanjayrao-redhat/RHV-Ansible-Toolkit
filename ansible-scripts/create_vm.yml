@@ -24,7 +24,7 @@
           tags:
             - always
 
-        - name: Create new VM f
+        - name: Create new VM 
           ovirt_vms:
             auth: "{{ ovirt_auth }}"            
             state: present
@@ -38,7 +38,13 @@
             operating_system: rhel_7x64
             disks:
               - name: rhel7_disk
+                name: rhel7_disk
                 bootable: True
+                size: 20GiB
+                state: attached
+                interface: virtio
+                format: raw
+                storage_domain: bootimages
             nics:
               - name: nic1
 

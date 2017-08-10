@@ -28,14 +28,15 @@
       ovirt_disks:
             auth: "{{ ovirt_auth }}"
             state: attached
-            vm_name: "{{item}}"
-            name: rhel7_disk
+            vm_name: "{{item.vmname}}"
+            name: "{{item.diskname}}"
             format: raw
             interface: virtio
-            size: 20GiB
+            size: "{{item.size}}"
             storage_domain: datadom
       with_items:
-          - rhel73_01           
+          - { vmname: 'rhel73_01', diskname: 'rhel73_01_Disk5', size: '140GiB' } 
+          - { vmname: 'rhel73_01', diskname: 'rhel73_01_Disk6', size: '140GiB' } 
 
     - name: Logout from oVirt
       ovirt_auth:
