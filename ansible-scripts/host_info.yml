@@ -4,11 +4,9 @@
   connection: local
   gather_facts: false
 
-  vars:
-     engine_url: https://dhcp31-210.perf.lab.eng.bos.redhat.com/ovirt-engine/api
-     engine_user: admin@internal
-     engine_password: 100yard-
-     engine_cafile: /etc/pki/ovirt-engine/ca.pem
+  vars_files:
+    - host_auth_variables
+
 
 #     rhev.admin.name: admin
 #     rhev.admin.pass: 100yard-
