@@ -1,0 +1,45 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - host_auth_variables
+
+
+  tasks:
+    - block:
+        - name: Login to oVirt
+          ovirt_auth:
+            url: "{{ engine_url }}"
+            username: "{{ engine_user }}"
+            password: "{{ engine_password }}"
+            ca_file: "{{ engine_cafile }}"
+          tags:
+            - always
+
+    - name : Disk creation
+      ovirt_disks:
+            auth: "{{ ovirt_auth }}"
+            state: detached
+            vm_name: "{{item.vmname}}"
+            name: "{{item.diskname}}"
+            interface: "{{item.driver}}" 
+            size: "{{item.size}}"
+            storage_domain: hdd_dom_64Mshard
+      with_items:
+          - { vmname: 'R73_01', diskname: 'R73_01_64Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
+          - { vmname: 'R73_01', diskname: 'R73_01_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_64Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_64Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+
