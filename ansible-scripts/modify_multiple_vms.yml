@@ -7,9 +7,6 @@
   vars_files:
     - host_auth_variables
 
-  vars_files:
-    - vm_vars.yml
-
   tasks:
     - block:
         - name: Login to oVirt
@@ -25,13 +22,16 @@
           ovirt_vms:
             auth: "{{ ovirt_auth }}"
             name: "{{item.vmname}}"
-            cpu_cores: "{{item.numcpus }}"
-            memory: "{{item.mem }}"
+            cpu_sockets: "{{item.numsock}}"
+            cpu_cores: "{{item.numcores}}"
+            memory: "{{item.mem}}"
+            memory_guaranteed: "{{item.memguar}}"
+            state: stopped
           with_items:
-            - { vmname: 'rhel73_01', numcpus: '8', mem: '57344' }
-            - { vmname: 'rhel73_02', numcpus: '8', mem: '57344' }
-            - { vmname: 'rhel73_03', numcpus: '8', mem: '57344' }
-            - { vmname: 'rhel73_04', numcpus: '8', mem: '57344' }
+            - { vmname: 'rhel73_01', numsock: '8', numcores: '1', mem: '58720256', memguar: '58720256' }
+            - { vmname: 'rhel73_02', numsock: '8', numcores: '1', mem: '58720256', memguar: '58720256' }
+            - { vmname: 'rhel73_03', numsock: '8', numcores: '1', mem: '58720256', memguar: '58720256' }
+            - { vmname: 'rhel73_04', numsock: '8', numcores: '1', mem: '58720256', memguar: '58720256' }
 
     - name: Logout from oVirt
       ovirt_auth:

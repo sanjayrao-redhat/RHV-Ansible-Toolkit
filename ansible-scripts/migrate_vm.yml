@@ -35,8 +35,8 @@
           ovirt_vms:
             auth: "{{ ovirt_auth }}"
             state: running
-            name: rhel73_01
-            host: perf92
+            name: rhel73_02
+            host: perf90
             poll: 0
 #          with_together:
 #            - "{{ovirt_vms | map(attribute='name') | list}}"

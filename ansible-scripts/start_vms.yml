@@ -23,10 +23,12 @@
             auth: "{{ ovirt_auth }}"
             name: "{{item}}"
             state: running
+            host: perf90
           with_items:
-            - R73_01
-            - R73_02
-            - R73_03
+            - rhel73_01
+            - rhel73_02
+            - rhel73_03
+            - rhel73_04
 
     - name: Logout from oVirt
       ovirt_auth:
