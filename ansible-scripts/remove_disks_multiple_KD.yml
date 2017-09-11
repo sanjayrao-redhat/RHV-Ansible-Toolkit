@@ -1,0 +1,76 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - host_auth_variables
+
+
+  tasks:
+    - block:
+        - name: Login to oVirt
+          ovirt_auth:
+            url: "{{ engine_url }}"
+            username: "{{ engine_user }}"
+            password: "{{ engine_password }}"
+            ca_file: "{{ engine_cafile }}"
+          tags:
+            - always
+
+    - name : Disk removal
+      ovirt_disks:
+            auth: "{{ ovirt_auth }}"
+            state: absent
+            vm_name: "{{item.vmname}}"
+            name: "{{item.diskname}}"
+      with_items:
+          - { vmname: 'R73_04', diskname: 'R73_04_Disk5' } 
+          - { vmname: 'R73_04', diskname: 'R73_04_Disk6' } 
+          - { vmname: 'R73_04', diskname: 'R73_04_Disk7' } 
+          - { vmname: 'R73_04', diskname: 'R73_04_Disk8' } 
+          - { vmname: 'R73_05', diskname: 'R73_05_Disk5' } 
+          - { vmname: 'R73_05', diskname: 'R73_05_Disk6' } 
+          - { vmname: 'R73_05', diskname: 'R73_05_Disk7' } 
+          - { vmname: 'R73_05', diskname: 'R73_05_Disk8' } 
+          - { vmname: 'R73_06', diskname: 'R73_06_Disk5' } 
+          - { vmname: 'R73_06', diskname: 'R73_06_Disk6' } 
+          - { vmname: 'R73_06', diskname: 'R73_06_Disk7' } 
+          - { vmname: 'R73_06', diskname: 'R73_06_Disk8' } 
+          - { vmname: 'R73_07', diskname: 'R73_07_Disk5' } 
+          - { vmname: 'R73_07', diskname: 'R73_07_Disk6' } 
+          - { vmname: 'R73_07', diskname: 'R73_07_Disk7' } 
+          - { vmname: 'R73_07', diskname: 'R73_07_Disk8' } 
+          - { vmname: 'R73_08', diskname: 'R73_08_Disk5' } 
+          - { vmname: 'R73_08', diskname: 'R73_08_Disk6' } 
+          - { vmname: 'R73_08', diskname: 'R73_08_Disk7' } 
+          - { vmname: 'R73_08', diskname: 'R73_08_Disk8' } 
+          - { vmname: 'R73_09', diskname: 'R73_09_Disk5' } 
+          - { vmname: 'R73_09', diskname: 'R73_09_Disk6' } 
+          - { vmname: 'R73_09', diskname: 'R73_09_Disk7' } 
+          - { vmname: 'R73_09', diskname: 'R73_09_Disk8' } 
+          - { vmname: 'R73_10', diskname: 'R73_10_Disk5' } 
+          - { vmname: 'R73_10', diskname: 'R73_10_Disk6' } 
+          - { vmname: 'R73_10', diskname: 'R73_10_Disk7' } 
+          - { vmname: 'R73_10', diskname: 'R73_10_Disk8' } 
+          - { vmname: 'R73_11', diskname: 'R73_11_Disk5' } 
+          - { vmname: 'R73_11', diskname: 'R73_11_Disk6' } 
+          - { vmname: 'R73_11', diskname: 'R73_11_Disk7' } 
+          - { vmname: 'R73_11', diskname: 'R73_11_Disk8' } 
+          - { vmname: 'R73_12', diskname: 'R73_12_Disk5' } 
+          - { vmname: 'R73_12', diskname: 'R73_12_Disk6' } 
+          - { vmname: 'R73_12', diskname: 'R73_12_Disk7' } 
+          - { vmname: 'R73_12', diskname: 'R73_12_Disk8' } 
+          - { vmname: 'R73_13', diskname: 'R73_13_Disk5' } 
+          - { vmname: 'R73_13', diskname: 'R73_13_Disk6' } 
+          - { vmname: 'R73_13', diskname: 'R73_13_Disk7' } 
+          - { vmname: 'R73_13', diskname: 'R73_13_Disk8' } 
+
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+

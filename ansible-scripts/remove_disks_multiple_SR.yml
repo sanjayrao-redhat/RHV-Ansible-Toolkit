@@ -7,8 +7,6 @@
   vars_files:
     - host_auth_variables
 
-  vars_files:
-    - vm_vars.yml
 
   tasks:
     - block:
@@ -24,14 +22,17 @@
     - name : Disk removal
       ovirt_disks:
             auth: "{{ ovirt_auth }}"
-            state: detached
-            vm_name: rhel73_01
-            name: rhel7_disk
-            format: raw
-            interface: virtio
-            size: 20GiB
-            storage_domain: datadom
-           
+            state: absent
+            vm_name: "{{item.vmname}}"
+            name: "{{item.diskname}}"
+      with_items:
+          - { vmname: 'R73_01', diskname: 'R73_01_ssd_4Mshard_Disk1' } 
+          - { vmname: 'R73_01', diskname: 'R73_01_ssd_4Mshard_Disk2' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_ssd_4Mshard_Disk1' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_ssd_4Mshard_Disk2' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_ssd_4Mshard_Disk1' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_ssd_4Mshard_Disk2' } 
+
     - name: Logout from oVirt
       ovirt_auth:
         state: absent

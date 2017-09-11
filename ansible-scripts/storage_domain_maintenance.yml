@@ -7,8 +7,6 @@
   vars_files:
     - host_auth_variables
 
-  vars_files:
-    - vm_vars.yml
 
   tasks:
     - block:
@@ -21,17 +19,20 @@
           tags:
             - always
 
-    - name : Disk removal
-      ovirt_disks:
+    - name : Storage Domain Maintenance mode
+      ovirt_storage_domains:
             auth: "{{ ovirt_auth }}"
-            state: detached
-            vm_name: rhel73_01
-            name: rhel7_disk
-            format: raw
-            interface: virtio
-            size: 20GiB
-            storage_domain: datadom
-           
+            state: maintenance
+            data_center: Default
+            name: "{{item}}"
+      with_items:
+          - hdd_dom_4Mshard
+          - hdd_dom_64Mshard
+          - hdd_dom_512Mshard
+          - ssd_dom_4M
+          - ssd_dom_64M
+          - ssd_dom_512M
+
     - name: Logout from oVirt
       ovirt_auth:
         state: absent

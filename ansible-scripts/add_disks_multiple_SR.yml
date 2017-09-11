@@ -28,14 +28,14 @@
             format: cow
             interface: "{{item.driver}}" 
             size: "{{item.size}}"
-            storage_domain: hdd_dom_512Mshard
+            storage_domain: ssd_dom_64M
       with_items:
-          - { vmname: 'R73_01', diskname: 'R73_01_512Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
-          - { vmname: 'R73_01', diskname: 'R73_01_512Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
-          - { vmname: 'R73_02', diskname: 'R73_02_512Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
-          - { vmname: 'R73_02', diskname: 'R73_02_512Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
-          - { vmname: 'R73_03', diskname: 'R73_03_512Mshard_Disk1', driver: 'virtio_scsi', size: '120GiB' } 
-          - { vmname: 'R73_03', diskname: 'R73_03_512Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+          - { vmname: 'R73_01', diskname: 'R73_01_ssd_64Mshard_Disk1', driver: 'virtio_scsi', size: '110GiB' } 
+          - { vmname: 'R73_01', diskname: 'R73_01_ssd_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_ssd_64Mshard_Disk1', driver: 'virtio_scsi', size: '110GiB' } 
+          - { vmname: 'R73_02', diskname: 'R73_02_ssd_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_ssd_64Mshard_Disk1', driver: 'virtio_scsi', size: '110GiB' } 
+          - { vmname: 'R73_03', diskname: 'R73_03_ssd_64Mshard_Disk2', driver: 'virtio_scsi', size: '70GiB' } 
 
     - name: Logout from oVirt
       ovirt_auth:
