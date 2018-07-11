@@ -1,0 +1,47 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - host_auth_variables
+
+  tasks:
+    - block:
+        - name: Login to oVirt
+          ovirt_auth:
+            url: "{{ engine_url }}"
+            username: "{{ engine_user }}"
+            password: "{{ engine_password }}"
+            ca_file: "{{ engine_cafile }}"
+          tags:
+            - always
+
+        - name: Modify VM characteristics
+          ovirt_vms:
+            auth: "{{ ovirt_auth }}"
+            name: "{{item.vmname}}"
+            type : "{{item.vmtype }}"
+          with_items:
+            - { vmname: 'rhel75_04', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_05', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_06', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_07', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_08', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_09', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_10', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_11', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_12', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_13', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_14', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_15', vmtype: 'high_performance' }
+            - { vmname: 'rhel75_16', vmtype: 'high_performance' }
+
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+        
