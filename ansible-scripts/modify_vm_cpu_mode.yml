@@ -1,0 +1,50 @@
+---
+- name: oVirt infra
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - host_auth_variables
+
+  tasks:
+    - block:
+        - name: Login to oVirt
+          ovirt_auth:
+            url: "{{ engine_url }}"
+            username: "{{ engine_user }}"
+            password: "{{ engine_password }}"
+            ca_file: "{{ engine_cafile }}"
+          tags:
+            - always
+
+        - name: Modify VM characteristics
+          ovirt_vms:
+            auth: "{{ ovirt_auth }}"
+            name: "{{item.vmname}}"
+            mode : "{{item.cpumode }}"
+          with_items:
+            - { vmname: 'rhel75_01', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_02', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_03', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_04', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_05', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_06', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_07', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_08', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_09', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_10', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_11', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_12', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_13', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_14', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_15', cpumode : 'host_passthrough' }
+            - { vmname: 'rhel75_16', cpumode : 'host_passthrough' }
+
+    - name: Logout from oVirt
+pu_mode.yml     ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+
